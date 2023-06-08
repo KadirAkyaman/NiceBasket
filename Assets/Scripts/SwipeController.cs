@@ -19,6 +19,9 @@ public class SwipeController : MonoBehaviour
     public bool isThrow;
     public bool isTouchDevice;
 
+    GameManager gameManager;
+
+    [SerializeField] AudioSource throwSound;
     private void Awake()
     {
         ballRb = GetComponent<Rigidbody>();
@@ -32,11 +35,14 @@ public class SwipeController : MonoBehaviour
         mainCamera = Camera.main;
         isThrow = false;
         isTouchDevice = IsTouchDevice();
+
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
     }
 
     void Update()
     {
-        if (!isThrow)
+        if (!isThrow && !gameManager.isFinish)//Oyun bitmediyse
         {
             if (isTouchDevice)
             {
@@ -115,6 +121,7 @@ public class SwipeController : MonoBehaviour
 
     public void ThrowBall()
     {
+        throwSound.Play();
         isThrow = true;
         ballRb.AddForce(new Vector3(throwDirection.y * throwSpeed / 2, throwDirection.y * throwSpeed, throwDirection.z * throwSpeed), ForceMode.Impulse);
     }

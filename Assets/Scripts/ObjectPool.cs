@@ -6,10 +6,11 @@ public class ObjectPool : MonoBehaviour
 {
     Queue<GameObject> pooledBalls;
     [SerializeField] GameObject ballPrefab;
-    [SerializeField] int poolSize;
+    public int poolSize;
 
     [SerializeField] Transform startPos;
 
+    GameManager gameManager;
     private void Awake()
     {
         pooledBalls = new Queue<GameObject>();
@@ -23,11 +24,20 @@ public class ObjectPool : MonoBehaviour
             pooledBalls.Enqueue(ball);
         }
     }
+
+    private void Start()
+    {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
     private void Update()
     {
-        if (Input.GetMouseButtonUp(0))
+
+        if (!gameManager.isFinish)
         {
-            Invoke("GetPooledBall", 0.2f);
+            if (Input.GetMouseButtonUp(0))
+            {
+                Invoke("GetPooledBall", 0.2f);
+            }
         }
     }
 
