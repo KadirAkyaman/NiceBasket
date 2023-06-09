@@ -24,10 +24,20 @@ public class UIController : MonoBehaviour
         scoreController = GameObject.Find("ScoreController").GetComponent<ScoreController>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         objectPool = GameObject.Find("ObjectPool").GetComponent<ObjectPool>();
-        remainingBall.SetActive(false);
-        startMenu.SetActive(true);
-        scoreMenu.SetActive(false);
-        continueMenu.SetActive(false);
+
+
+        if (SceneManager.GetActiveScene().buildIndex == 0)//eðer ilk seviyeyse
+        {
+            remainingBall.SetActive(false);
+            startMenu.SetActive(true);
+            scoreMenu.SetActive(false);
+            continueMenu.SetActive(false);
+        }
+        else
+        {
+            continueMenu.SetActive(false);
+            CloseStartMenu();
+        }
     }
 
     private void Update()

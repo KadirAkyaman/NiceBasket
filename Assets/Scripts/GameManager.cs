@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     ObjectPool objectPool;
     public bool isFinish;
 
-
+    public int levelCount;
     void Start()
     {
         isFinish = false;

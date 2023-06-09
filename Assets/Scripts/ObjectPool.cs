@@ -23,11 +23,18 @@ public class ObjectPool : MonoBehaviour
 
             pooledBalls.Enqueue(ball);
         }
+
+
     }
 
     private void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        if (gameManager.levelCount > 1)
+        {
+            GetPooledBall();
+        }
     }
     private void Update()
     {
