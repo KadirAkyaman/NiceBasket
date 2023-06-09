@@ -10,6 +10,8 @@ public class TargetController : MonoBehaviour
     [SerializeField] Animator targetAnimator;
     [SerializeField] GameObject targetParent;
 
+    [SerializeField] AudioSource targetHitSound;
+
     bool isHit;
     void Start()
     {
@@ -22,6 +24,7 @@ public class TargetController : MonoBehaviour
         if (other.CompareTag("Ball"))
         {
             Debug.Log("hit");
+            targetHitSound.Play();
             isHit = true;
             scoreController.score++;
             scoreController.ScoreUpdate();

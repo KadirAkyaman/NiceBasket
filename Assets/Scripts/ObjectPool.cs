@@ -11,6 +11,7 @@ public class ObjectPool : MonoBehaviour
     [SerializeField] Transform startPos;
 
     GameManager gameManager;
+    int remainingBall;
     private void Awake()
     {
         pooledBalls = new Queue<GameObject>();
@@ -29,20 +30,23 @@ public class ObjectPool : MonoBehaviour
 
     private void Start()
     {
+        remainingBall = poolSize;
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         if (gameManager.levelCount > 1)
         {
+            remainingBall--;
             GetPooledBall();
         }
     }
     private void Update()
     {
 
-        if (!gameManager.isFinish)
+        if (remainingBall > 0)
         {
             if (Input.GetMouseButtonUp(0))
             {
+                remainingBall--;
                 Invoke("GetPooledBall", 0.2f);
             }
         }
@@ -63,12 +67,4 @@ public class ObjectPool : MonoBehaviour
         return ball;
     }
 
-    public void ReturnPooledBall(GameObject ball)
-    {
-        ball.SetActive(false); // Görünmez yap
-
-        pooledBalls.Enqueue(ball); // Kuyruða geri ekle
-
-        ball.transform.position = startPos.position;
-    }
 }

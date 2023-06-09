@@ -5,7 +5,6 @@ using UnityEngine;
 public class BallController : MonoBehaviour
 {
     [SerializeField] float lifeTime;
-    ObjectPool objectPool;
 
     public bool isBasket;
 
@@ -14,34 +13,39 @@ public class BallController : MonoBehaviour
     SwipeController swipeController;
 
     [SerializeField] AudioSource touchGround;
+    [SerializeField] AudioSource touchCourt;
+    [SerializeField] AudioSource touchHole;
+    bool touchHolePlaying;
     private void Start()
     {
         isBasket = false;
         swipeController = GetComponent<SwipeController>();
         ballRb = GetComponent<Rigidbody>();
-
-        objectPool = GameObject.Find("ObjectPool").GetComponent<ObjectPool>();
-
     }
-    private void Update()
+    private void OnCollisionEnter(Collision collision)
     {
-        if (Input.GetMouseButtonUp(0))
+        if (collision.gameObject.CompareTag("Ground"))
         {
-            Invoke("SetActiveChange", lifeTime);
+            touchGround.Play();
+        }
+        if (collision.gameObject.CompareTag("Court"))
+        {
+            touchCourt.Play();
+        }
+        if (collision.gameObject.CompareTag("Hole"))
+        {
+            if (!touchHolePlaying)
+            {
+                touchHole.Play();
+                touchHolePlaying = true;
+                Invoke("TouchHoleSoundController", 0.5f);
+            }
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    void TouchHoleSoundController()//Bir obje belirli süre aralýðýnda sadece 1 kere ses yapabilsin
     {
-        //if (collision.gameObject.CompareTag("Ground"))
-        //{
-        touchGround.Play();
-        //}
+        touchHolePlaying = false;
     }
-    void SetActiveChange()
-    {
-        objectPool.ReturnPooledBall(gameObject);
-        ballRb.isKinematic = true;
-        swipeController.isThrow = false;
-    }
+
 }

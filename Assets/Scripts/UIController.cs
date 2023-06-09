@@ -19,6 +19,10 @@ public class UIController : MonoBehaviour
     ObjectPool objectPool;
     GameManager gameManager;
     ScoreController scoreController;
+
+    [SerializeField] AudioSource clickSound;
+    [SerializeField] AudioSource finalWhistle;
+    bool finishSoundCheck;
     void Start()
     {
         scoreController = GameObject.Find("ScoreController").GetComponent<ScoreController>();
@@ -40,6 +44,10 @@ public class UIController : MonoBehaviour
         }
     }
 
+    void ClickSound()
+    {
+        clickSound.Play();
+    }
     private void Update()
     {
         remainingText.text = gameManager.remainingBallAmount.ToString();
@@ -51,6 +59,7 @@ public class UIController : MonoBehaviour
     }
     public void StartGame()
     {
+        ClickSound();
         startIcon.SetActive(false);
         startMenuAnimator.SetBool("isStart", true);
         Invoke("CloseStartMenu", 1f);
@@ -58,6 +67,11 @@ public class UIController : MonoBehaviour
 
     void FinishGame()
     {
+        if (!finishSoundCheck)                                      //WHISTLE
+        {
+            finalWhistle.Play();
+            finishSoundCheck = true;
+        }
         scoreContinueMenuText.text = scoreController.score.ToString();
         startMenu.SetActive(false);
         scoreMenu.SetActive(false);
@@ -66,6 +80,7 @@ public class UIController : MonoBehaviour
     }
     public void ContinueGame()
     {
+        ClickSound();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);//Bir sonraki level'ý aç
     }
 

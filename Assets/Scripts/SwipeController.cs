@@ -22,6 +22,7 @@ public class SwipeController : MonoBehaviour
     GameManager gameManager;
 
     [SerializeField] AudioSource throwSound;
+
     private void Awake()
     {
         ballRb = GetComponent<Rigidbody>();
@@ -70,10 +71,9 @@ public class SwipeController : MonoBehaviour
                 case TouchPhase.Ended:
                     endTouchPosition = touch.position;
 
-                    if (endTouchPosition.y > startTouchPosition.y)
-                    {
-                        ThrowBall();
-                    }
+
+                    ThrowBall();
+
                     break;
             }
         }
@@ -112,15 +112,15 @@ public class SwipeController : MonoBehaviour
 
             throwDirection = startTouchPosition - endTouchPosition;
 
-            if (throwDirection.y > 0)
-            {
-                ThrowBall();
-            }
+
+            ThrowBall();
+
         }
     }
 
     public void ThrowBall()
     {
+
         throwSound.Play();
         isThrow = true;
         ballRb.AddForce(new Vector3(throwDirection.y * throwSpeed / 2, throwDirection.y * throwSpeed, throwDirection.z * throwSpeed), ForceMode.Impulse);

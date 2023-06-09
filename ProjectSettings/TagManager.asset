@@ -8,6 +8,7 @@ TagManager:
   - Hole
   - Ground
   - Target
+  - Court
   layers:
   - Default
   - TransparentFX
