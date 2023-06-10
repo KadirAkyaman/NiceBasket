@@ -43,6 +43,18 @@ public class BallController : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (swipeController.isThrow)
+        {
+            Invoke("ChangeSetActive", lifeTime);
+        }
+    }
+
+    void ChangeSetActive()
+    {
+        gameObject.SetActive(false);
+    }
     void TouchHoleSoundController()//Bir obje belirli süre aralýðýnda sadece 1 kere ses yapabilsin
     {
         touchHolePlaying = false;

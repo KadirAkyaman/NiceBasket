@@ -23,15 +23,19 @@ public class UIController : MonoBehaviour
     [SerializeField] AudioSource clickSound;
     [SerializeField] AudioSource finalWhistle;
     bool finishSoundCheck;
+
+    [SerializeField] GameObject levelMenu;
+    [SerializeField] TextMeshProUGUI level;
     void Start()
     {
         scoreController = GameObject.Find("ScoreController").GetComponent<ScoreController>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         objectPool = GameObject.Find("ObjectPool").GetComponent<ObjectPool>();
-
+        level.text = "Level " + gameManager.levelCount.ToString();
 
         if (SceneManager.GetActiveScene().buildIndex == 0)//eðer ilk seviyeyse
         {
+            levelMenu.SetActive(false);
             remainingBall.SetActive(false);
             startMenu.SetActive(true);
             scoreMenu.SetActive(false);
@@ -59,6 +63,7 @@ public class UIController : MonoBehaviour
     }
     public void StartGame()
     {
+        levelMenu.SetActive(true);
         ClickSound();
         startIcon.SetActive(false);
         startMenuAnimator.SetBool("isStart", true);
@@ -82,6 +87,8 @@ public class UIController : MonoBehaviour
     {
         ClickSound();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);//Bir sonraki level'ý aç
+
+
     }
 
 
