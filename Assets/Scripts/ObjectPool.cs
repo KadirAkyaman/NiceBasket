@@ -12,6 +12,7 @@ public class ObjectPool : MonoBehaviour
 
     GameManager gameManager;
     int remainingBall;
+
     private void Awake()
     {
         pooledBalls = new Queue<GameObject>();

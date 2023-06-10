@@ -23,6 +23,8 @@ public class SwipeController : MonoBehaviour
 
     [SerializeField] AudioSource throwSound;
 
+
+
     private void Awake()
     {
         ballRb = GetComponent<Rigidbody>();
@@ -43,80 +45,89 @@ public class SwipeController : MonoBehaviour
 
     void Update()
     {
-        if (!isThrow && !gameManager.isFinish)//Oyun bitmediyse
-        {
-            if (isTouchDevice)
-            {
-                HandleTouchInput();
-            }
-            else
-            {
-                HandleMouseInput();
-            }
-        }
+        TouchInput();
     }
 
-    void HandleTouchInput()
+    void TouchInput()
     {
-        if (Input.touchCount > 0)
+        if (Input.touchCount > 0 && !isThrow)
         {
             Touch touch = Input.GetTouch(0);
 
-            switch (touch.phase)
+            if (touch.phase == TouchPhase.Began)
             {
-                case TouchPhase.Began:
-                    startTouchPosition = touch.position;
-                    break;
+                mousePos = touch.position;
+                mousePos.z = 5f;
+                startTouchPosition = mainCamera.ScreenToWorldPoint(mousePos);
+            }
 
-                case TouchPhase.Ended:
-                    endTouchPosition = touch.position;
+            if (touch.phase == TouchPhase.Moved)
+            {
+                mousePos = touch.position;
+                mousePos.z = 5f;
+                Vector3 dragPosition = mainCamera.ScreenToWorldPoint(mousePos);
+                throwDirection = startTouchPosition - dragPosition;
 
+                ballLine.positionCount = 2;
+                ballLine.SetPosition(0, transform.position);
 
-                    ThrowBall();
+                Vector3 lineEndPos = transform.position + throwDirection.normalized * throwDirection.y;
+                ballLine.SetPosition(1, lineEndPos);
+            }
 
-                    break;
+            if (touch.phase == TouchPhase.Ended)
+            {
+                ballLine.positionCount = 0;
+                mousePos = touch.position;
+                mousePos.z = 5f;
+                ballRb.isKinematic = false;
+                endTouchPosition = mainCamera.ScreenToWorldPoint(mousePos);
+
+                throwDirection = startTouchPosition - endTouchPosition;
+
+                ThrowBall();
             }
         }
     }
 
-    void HandleMouseInput()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            mousePos = Input.mousePosition;
-            mousePos.z = 5f;
-            startTouchPosition = mainCamera.ScreenToWorldPoint(mousePos);
-        }
-
-        if (Input.GetMouseButton(0))
-        {
-            mousePos = Input.mousePosition;
-            mousePos.z = 5f;
-            Vector3 dragPosition = mainCamera.ScreenToWorldPoint(mousePos);
-            throwDirection = startTouchPosition - dragPosition;
-
-            ballLine.positionCount = 2;
-            ballLine.SetPosition(0, transform.position);
-
-            Vector3 lineEndPos = transform.position + throwDirection.normalized * throwDirection.y;
-            ballLine.SetPosition(1, lineEndPos);
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            ballLine.positionCount = 0;
-            mousePos = Input.mousePosition;
-            mousePos.z = 5f;
-            ballRb.isKinematic = false;
-            endTouchPosition = mainCamera.ScreenToWorldPoint(mousePos);
-
-            throwDirection = startTouchPosition - endTouchPosition;
-
-
-            ThrowBall();
-
-        }
-    }
+    //void MouseInput()
+    //{
+    //if (Input.GetMouseButtonDown(0))
+    //{
+    //    mousePos = Input.mousePosition;
+    //    mousePos.z = 5f;
+    //    startTouchPosition = mainCamera.ScreenToWorldPoint(mousePos);
+    //}
+    //
+    //if (Input.GetMouseButton(0))
+    //{
+    //    mousePos = Input.mousePosition;
+    //    mousePos.z = 5f;
+    //    Vector3 dragPosition = mainCamera.ScreenToWorldPoint(mousePos);
+    //    throwDirection = startTouchPosition - dragPosition;
+    //
+    //    ballLine.positionCount = 2;
+    //    ballLine.SetPosition(0, transform.position);
+    //
+    //    Vector3 lineEndPos = transform.position + throwDirection.normalized * throwDirection.y;
+    //    ballLine.SetPosition(1, lineEndPos);
+    //}
+    //
+    //if (Input.GetMouseButtonUp(0))
+    //{
+    //    ballLine.positionCount = 0;
+    //    mousePos = Input.mousePosition;
+    //    mousePos.z = 5f;
+    //    ballRb.isKinematic = false;
+    //    endTouchPosition = mainCamera.ScreenToWorldPoint(mousePos);
+    //
+    //    throwDirection = startTouchPosition - endTouchPosition;
+    //
+    //
+    //    ThrowBall();
+    //
+    //}
+    //}
 
     public void ThrowBall()
     {
