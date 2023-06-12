@@ -88,8 +88,6 @@ public class UIController : MonoBehaviour
     {
         ClickSound();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);//Bir sonraki level'ý aç
-
-
     }
 
 
