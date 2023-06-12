@@ -27,6 +27,7 @@ public class UIController : MonoBehaviour
     [SerializeField] GameObject levelMenu;
     [SerializeField] TextMeshProUGUI level;
 
+    public bool isStart = false;
     void Start()
     {
         scoreController = GameObject.Find("ScoreController").GetComponent<ScoreController>();
@@ -64,6 +65,7 @@ public class UIController : MonoBehaviour
     }
     public void StartGame()
     {
+        isStart = true;
         levelMenu.SetActive(true);
         ClickSound();
         startIcon.SetActive(false);

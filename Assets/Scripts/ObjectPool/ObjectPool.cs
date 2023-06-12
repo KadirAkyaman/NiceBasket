@@ -11,7 +11,8 @@ public class ObjectPool : MonoBehaviour
     [SerializeField] Transform startPos;
 
     GameManager gameManager;
-    int remainingBall;
+    public int remainingBall;
+    UIController uIController;
 
     private void Awake()
     {
@@ -33,7 +34,7 @@ public class ObjectPool : MonoBehaviour
     {
         remainingBall = poolSize;
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-
+        uIController = GameObject.Find("Canvas").GetComponent<UIController>();
         if (gameManager.levelCount > 1)
         {
             remainingBall--;
@@ -43,7 +44,7 @@ public class ObjectPool : MonoBehaviour
     private void Update()
     {
 
-        if (remainingBall > 0)
+        if (remainingBall > 0 && uIController.isStart)
         {
             if (Input.GetMouseButtonUp(0))
             {

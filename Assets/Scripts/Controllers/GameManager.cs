@@ -10,8 +10,12 @@ public class GameManager : MonoBehaviour
 
     public int levelCount;
 
+    UIController uIController;
+
+    bool started = false;
     void Start()
     {
+        uIController = GameObject.Find("Canvas").GetComponent<UIController>();
         isFinish = false;
         objectPool = GameObject.Find("ObjectPool").GetComponent<ObjectPool>();
         remainingBallAmount = objectPool.poolSize;
@@ -21,29 +25,42 @@ public class GameManager : MonoBehaviour
     {
 
 
-        if (levelCount == 1)
+        if (remainingBallAmount <= 0)
         {
-            if (remainingBallAmount <= 0)
+            isFinish = true;
+        }
+
+        if (uIController.isStart)
+        {
+            Invoke(nameof(Started), 0.5f);
+        }
+
+        if (levelCount == 1 && started)
+        {
+            if (Input.GetMouseButtonUp(0) && remainingBallAmount != 0)
             {
-                if (Input.GetMouseButtonUp(0))
-                {
-                    isFinish = true;
-                }
+                remainingBallAmount--;
             }
         }
-        else
+
+        else if (levelCount != 1)
         {
-            if (remainingBallAmount <= 0)
+            if (Input.GetMouseButtonUp(0) && remainingBallAmount != 0)
             {
-                isFinish = true;
+
+                remainingBallAmount--;
+
             }
         }
 
-        if (Input.GetMouseButtonUp(0) && remainingBallAmount != 0)
+        if (levelCount > 1)
         {
-
-            remainingBallAmount--;
-
+            uIController.isStart = true;
         }
+    }
+
+    void Started()
+    {
+        started = true;
     }
 }

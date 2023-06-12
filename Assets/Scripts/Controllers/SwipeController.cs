@@ -20,6 +20,7 @@ public class SwipeController : MonoBehaviour
 
 
     GameManager gameManager;
+    UIController uIController;
 
     [SerializeField] AudioSource throwSound;
 
@@ -42,15 +43,18 @@ public class SwipeController : MonoBehaviour
         isThrow = false;
 
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-
+        uIController = GameObject.Find("Canvas").GetComponent<UIController>();
     }
 
     void Update()
     {
-        TouchInput();
-        if (!isThrow)
+        if (uIController.isStart)
         {
-            MouseInput();
+            TouchInput();
+            if (!isThrow)
+            {
+                MouseInput();
+            }
         }
 
     }
