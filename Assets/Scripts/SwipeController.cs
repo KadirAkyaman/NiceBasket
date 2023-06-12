@@ -17,13 +17,11 @@ public class SwipeController : MonoBehaviour
     Camera mainCamera;
 
     public bool isThrow;
-    public bool isTouchDevice;
+
 
     GameManager gameManager;
 
     [SerializeField] AudioSource throwSound;
-
-
 
     private void Awake()
     {
@@ -37,7 +35,6 @@ public class SwipeController : MonoBehaviour
         ballRb.isKinematic = true;
         mainCamera = Camera.main;
         isThrow = false;
-        isTouchDevice = IsTouchDevice();
 
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
@@ -46,6 +43,11 @@ public class SwipeController : MonoBehaviour
     void Update()
     {
         TouchInput();
+        if (!isThrow)
+        {
+            MouseInput();
+        }
+
     }
 
     void TouchInput()
@@ -71,7 +73,8 @@ public class SwipeController : MonoBehaviour
                 ballLine.positionCount = 2;
                 ballLine.SetPosition(0, transform.position);
 
-                Vector3 lineEndPos = transform.position + throwDirection.normalized * throwDirection.y;
+                Vector3 lineEndPos = transform.position + throwDirection;
+
                 ballLine.SetPosition(1, lineEndPos);
             }
 
@@ -90,44 +93,44 @@ public class SwipeController : MonoBehaviour
         }
     }
 
-    //void MouseInput()
-    //{
-    //if (Input.GetMouseButtonDown(0))
-    //{
-    //    mousePos = Input.mousePosition;
-    //    mousePos.z = 5f;
-    //    startTouchPosition = mainCamera.ScreenToWorldPoint(mousePos);
-    //}
-    //
-    //if (Input.GetMouseButton(0))
-    //{
-    //    mousePos = Input.mousePosition;
-    //    mousePos.z = 5f;
-    //    Vector3 dragPosition = mainCamera.ScreenToWorldPoint(mousePos);
-    //    throwDirection = startTouchPosition - dragPosition;
-    //
-    //    ballLine.positionCount = 2;
-    //    ballLine.SetPosition(0, transform.position);
-    //
-    //    Vector3 lineEndPos = transform.position + throwDirection.normalized * throwDirection.y;
-    //    ballLine.SetPosition(1, lineEndPos);
-    //}
-    //
-    //if (Input.GetMouseButtonUp(0))
-    //{
-    //    ballLine.positionCount = 0;
-    //    mousePos = Input.mousePosition;
-    //    mousePos.z = 5f;
-    //    ballRb.isKinematic = false;
-    //    endTouchPosition = mainCamera.ScreenToWorldPoint(mousePos);
-    //
-    //    throwDirection = startTouchPosition - endTouchPosition;
-    //
-    //
-    //    ThrowBall();
-    //
-    //}
-    //}
+    void MouseInput()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            mousePos = Input.mousePosition;
+            mousePos.z = 5f;
+            startTouchPosition = mainCamera.ScreenToWorldPoint(mousePos);
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            mousePos = Input.mousePosition;
+            mousePos.z = 5f;
+            Vector3 dragPosition = mainCamera.ScreenToWorldPoint(mousePos);
+            throwDirection = startTouchPosition - dragPosition;
+
+            ballLine.positionCount = 2;
+            ballLine.SetPosition(0, transform.position);
+
+            Vector3 lineEndPos = transform.position + throwDirection;
+            ballLine.SetPosition(1, lineEndPos);
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            ballLine.positionCount = 0;
+            mousePos = Input.mousePosition;
+            mousePos.z = 5f;
+            ballRb.isKinematic = false;
+            endTouchPosition = mainCamera.ScreenToWorldPoint(mousePos);
+
+            throwDirection = startTouchPosition - endTouchPosition;
+
+
+            ThrowBall();
+
+        }
+    }
 
     public void ThrowBall()
     {
@@ -135,11 +138,6 @@ public class SwipeController : MonoBehaviour
         throwSound.Play();
         isThrow = true;
         ballRb.AddForce(new Vector3(throwDirection.y * throwSpeed / 2, throwDirection.y * throwSpeed, throwDirection.z * throwSpeed), ForceMode.Impulse);
-    }
-
-    public bool IsTouchDevice()
-    {
-        return SystemInfo.deviceType == DeviceType.Handheld;
     }
 
 }

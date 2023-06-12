@@ -9,10 +9,14 @@ public class ScoreController : MonoBehaviour
     public int score;
 
     [SerializeField] AudioSource basketSound;
+
+    ApplauseController applauseController;
     private void Start()
     {
         score = 0;
         scoreText.text = score.ToString();
+
+        applauseController = GameObject.Find("Applause").GetComponent<ApplauseController>();
     }
     void OnTriggerExit(Collider other)
     {
@@ -32,6 +36,7 @@ public class ScoreController : MonoBehaviour
         if (!other.gameObject.GetComponentInChildren<BallController>().isBasket)//eðer o topla daha önceden basket atýlmamýþsa
         {
             basketSound.Play();
+            applauseController.ApplausePlay();
         }
 
     }
