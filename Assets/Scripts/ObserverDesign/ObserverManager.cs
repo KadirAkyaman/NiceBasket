@@ -48,7 +48,8 @@ public enum NotificationType
     HitHole,
     HitCourt,
     HitBall,
-    SwipeBall
+    Basket,
+    Target
 }
 
 public enum SubjectType

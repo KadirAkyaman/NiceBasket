@@ -26,6 +26,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField] GameObject levelMenu;
     [SerializeField] TextMeshProUGUI level;
+
     void Start()
     {
         scoreController = GameObject.Find("ScoreController").GetComponent<ScoreController>();

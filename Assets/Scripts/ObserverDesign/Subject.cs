@@ -6,6 +6,8 @@ public abstract class Subject : MonoBehaviour
 {
     List<Observer> _observers = null;
 
+
+
     [SerializeField] SubjectType _subjectType;
     public SubjectType SubjectType => _subjectType;
     private void Start()

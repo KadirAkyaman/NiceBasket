@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public bool isFinish;
 
     public int levelCount;
+
     void Start()
     {
         isFinish = false;
@@ -18,9 +19,24 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (remainingBallAmount <= 0)
+
+
+        if (levelCount == 1)
         {
-            isFinish = true;
+            if (remainingBallAmount <= 0)
+            {
+                if (Input.GetMouseButtonUp(0))
+                {
+                    isFinish = true;
+                }
+            }
+        }
+        else
+        {
+            if (remainingBallAmount <= 0)
+            {
+                isFinish = true;
+            }
         }
 
         if (Input.GetMouseButtonUp(0) && remainingBallAmount != 0)

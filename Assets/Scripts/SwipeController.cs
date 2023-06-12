@@ -23,6 +23,8 @@ public class SwipeController : MonoBehaviour
 
     [SerializeField] AudioSource throwSound;
 
+    [SerializeField] BallType ballType = null;
+
     private void Awake()
     {
         ballRb = GetComponent<Rigidbody>();
@@ -31,6 +33,9 @@ public class SwipeController : MonoBehaviour
 
     void Start()
     {
+
+        ScriptableObjects();
+
         ballStartPos = transform.position;
         ballRb.isKinematic = true;
         mainCamera = Camera.main;
@@ -48,6 +53,12 @@ public class SwipeController : MonoBehaviour
             MouseInput();
         }
 
+    }
+
+    void ScriptableObjects()
+    {
+        throwSpeed = ballType.throwPower;
+        transform.localScale = ballType.ballScale;
     }
 
     void TouchInput()
@@ -134,7 +145,7 @@ public class SwipeController : MonoBehaviour
 
     public void ThrowBall()
     {
-
+        GetComponent<Animator>().SetBool("isThrow", true);
         throwSound.Play();
         isThrow = true;
         ballRb.AddForce(new Vector3(throwDirection.y * throwSpeed / 2, throwDirection.y * throwSpeed, throwDirection.z * throwSpeed), ForceMode.Impulse);

@@ -9,6 +9,7 @@ TagManager:
   - Ground
   - Target
   - Court
+  - ScoreArea
   layers:
   - Default
   - TransparentFX

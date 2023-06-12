@@ -8,7 +8,6 @@ public class ScoreController : MonoBehaviour
     [SerializeField] TextMeshProUGUI scoreText;
     public int score;
 
-    [SerializeField] AudioSource basketSound;
 
     ApplauseController applauseController;
     private void Start()
@@ -35,7 +34,6 @@ public class ScoreController : MonoBehaviour
     {
         if (!other.gameObject.GetComponentInChildren<BallController>().isBasket)//eðer o topla daha önceden basket atýlmamýþsa
         {
-            basketSound.Play();
             applauseController.ApplausePlay();
         }
 

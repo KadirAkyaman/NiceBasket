@@ -8,7 +8,8 @@ public class SoundSystem : Observer
     [SerializeField] AudioSource holeSound;
     [SerializeField] AudioSource courtSound;
     [SerializeField] AudioSource ballSound;
-    [SerializeField] AudioSource swipeBallSound;
+    [SerializeField] AudioSource basketSound;
+    [SerializeField] AudioSource targetSound;
     private void Start()
     {
         ObserverManager.Instance.RegisterObserver(this, SubjectType.SoundPanel);
@@ -34,14 +35,14 @@ public class SoundSystem : Observer
                 ballSound.Play();
                 break;
 
-            case NotificationType.SwipeBall:
-                swipeBallSound.Play();
+            case NotificationType.Basket:
+                basketSound.Play();
+                break;
+
+            case NotificationType.Target:
+                targetSound.Play();
                 break;
 
         }
-
-
     }
-
-
 }

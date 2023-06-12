@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
+    [SerializeField] BallType ballType = null;
+
     [SerializeField] float lifeTime;
 
     public bool isBasket;
@@ -12,35 +14,13 @@ public class BallController : MonoBehaviour
     Rigidbody ballRb;
     SwipeController swipeController;
 
-    [SerializeField] AudioSource touchGround;
-    [SerializeField] AudioSource touchCourt;
-    [SerializeField] AudioSource touchHole;
-    bool touchHolePlaying;
     private void Start()
     {
+        ScriptableObjects();
+
         isBasket = false;
         swipeController = GetComponent<SwipeController>();
         ballRb = GetComponent<Rigidbody>();
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            touchGround.Play();
-        }
-        if (collision.gameObject.CompareTag("Court"))
-        {
-            touchCourt.Play();
-        }
-        if (collision.gameObject.CompareTag("Hole"))
-        {
-            if (!touchHolePlaying)
-            {
-                touchHole.Play();
-                touchHolePlaying = true;
-                Invoke("TouchHoleSoundController", 0.5f);
-            }
-        }
     }
 
     private void Update()
@@ -51,13 +31,32 @@ public class BallController : MonoBehaviour
         }
     }
 
+    void ScriptableObjects()
+    {
+        GetComponent<MeshRenderer>().materials[0] = ballType.mainColor;
+        GetComponent<MeshRenderer>().materials[1] = ballType.lineColor;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Court"))
+        {
+            isBasket = false;
+        }
+        GetComponent<Animator>().enabled = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("ScoreArea"))
+        {
+            Invoke(nameof(ChangeSetActive), 1.5f);
+        }
+    }
+
     void ChangeSetActive()
     {
         gameObject.SetActive(false);
-    }
-    void TouchHoleSoundController()//Bir obje belirli süre aralýðýnda sadece 1 kere ses yapabilsin
-    {
-        touchHolePlaying = false;
     }
 
 }
